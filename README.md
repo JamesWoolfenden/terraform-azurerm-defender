@@ -23,16 +23,32 @@ This is a very basic example.
 
 From an original example: <https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/deploy-microsoft-defender-for-cloud-via-terraform/ba-p/3563710>
 
-![alt text](./diagram/message_queue.png)
-
 Include **module.acr.tf** this repository as a module in your existing Terraform code:
 
 ```terraform
 module "search" {
   source      = "JamesWoolfenden/search/azurerm"
   version     = "v0.1.1"
-  acr         = var.acr
+  tags     = var.common_tags
+  location = azurerm_resource_group.security_rg.location
+  rg_name  = azurerm_resource_group.security_rg.name
+  mdc_contact = {
+    name                = "James Woolfenden"
+    email               = "james.woolfenden@gmail.com"
+    phone               = var.phone
+    alert_notifications = true
+    alerts_to_admins    = true
+  }
+  pricing = [{
+    resource_type = "VirtualMachines"
+    tier          = "Standard"
+    },
+    {
+      resource_type = "Arm"
+      tier          = "Standard"
+  }]
 }
+
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
