@@ -1,3 +1,3 @@
 output "defender" {
-    value = module.defender
+  value = module.defender
 }

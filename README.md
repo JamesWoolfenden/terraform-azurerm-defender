@@ -21,6 +21,8 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 This is a very basic example.
 
+From an original example: <https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/deploy-microsoft-defender-for-cloud-via-terraform/ba-p/3563710>
+
 ![alt text](./diagram/message_queue.png)
 
 Include **module.acr.tf** this repository as a module in your existing Terraform code:
@@ -52,22 +54,41 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_search_service.pike](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/search_service) | resource |
+| [azurerm_log_analytics_solution.la_workspace_security](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) | resource |
+| [azurerm_log_analytics_solution.la_workspace_securityfree](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) | resource |
+| [azurerm_log_analytics_workspace.la_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_role_assignment.va-auto-provisioning-identity-role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_security_center_auto_provisioning.auto-provisioning](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_auto_provisioning) | resource |
+| [azurerm_security_center_automation.la-exports](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_automation) | resource |
+| [azurerm_security_center_contact.mdc_contact](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_contact) | resource |
+| [azurerm_security_center_setting.setting_mcas](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_setting) | resource |
+| [azurerm_security_center_setting.setting_mde](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_setting) | resource |
+| [azurerm_security_center_setting.setting_sentinel](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_setting) | resource |
+| [azurerm_security_center_subscription_pricing.pike](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_subscription_pricing) | resource |
+| [azurerm_security_center_workspace.la_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_workspace) | resource |
+| [azurerm_subscription_policy_assignment.asb_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subscription_policy_assignment) | resource |
+| [azurerm_subscription_policy_assignment.va-auto-provisioning](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subscription_policy_assignment) | resource |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_MCAS_enabled"></a> [MCAS\_enabled](#input\_MCAS\_enabled) | n/a | `bool` | `false` | no |
+| <a name="input_SENTINEL_enabled"></a> [SENTINEL\_enabled](#input\_SENTINEL\_enabled) | n/a | `bool` | `false` | no |
+| <a name="input_WDATP_enabled"></a> [WDATP\_enabled](#input\_WDATP\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
+| <a name="input_mdc_contact"></a> [mdc\_contact](#input\_mdc\_contact) | n/a | <pre>object({<br>    name                = string<br>    email               = string<br>    phone               = string<br>    alert_notifications = bool<br>    alerts_to_admins    = bool<br>  })</pre> | n/a | yes |
+| <a name="input_pricing"></a> [pricing](#input\_pricing) | n/a | <pre>list(object({<br>    tier          = string<br>    resource_type = string<br>  }))</pre> | n/a | yes |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | n/a | `string` | n/a | yes |
-| <a name="input_search"></a> [search](#input\_search) | n/a | <pre>object({<br>    sku             = string<br>    name            = string<br>    public          = bool<br>    replica_count   = number<br>    partition_count = number<br>    allowed_ips     = list(string)<br>  })</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | This is to help you add tags to your cloud objects | `map(any)` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_search"></a> [search](#output\_search) | n/a |
+| <a name="output_solutions"></a> [solutions](#output\_solutions) | n/a |
+| <a name="output_workspace"></a> [workspace](#output\_workspace) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Policy
@@ -86,11 +107,10 @@ resource "azurerm_role_definition" "terraform_pike" {
 
   permissions {
     actions = [
-    "Microsoft.ContainerRegistry/registries/delete",
-    "Microsoft.ContainerRegistry/registries/operationStatuses/read",
-    "Microsoft.ContainerRegistry/registries/read",
-    "Microsoft.ContainerRegistry/registries/write",
-    "Microsoft.Resources/subscriptions/resourcegroups/read"]
+    "Microsoft.OperationalInsights/workspaces/delete",
+    "Microsoft.OperationalInsights/workspaces/read",
+    "Microsoft.OperationalInsights/workspaces/write",
+    "Microsoft.Resources/subscriptions/providers/read"]
     not_actions = []
   }
 
