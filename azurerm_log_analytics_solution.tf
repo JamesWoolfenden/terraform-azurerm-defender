@@ -26,4 +26,3 @@ resource "azurerm_log_analytics_solution" "la_workspace_securityfree" {
   }
   tags = var.tags
 }
-

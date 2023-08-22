@@ -5,4 +5,3 @@ resource "azurerm_security_center_contact" "mdc_contact" {
   alert_notifications = var.mdc_contact.alert_notifications
   alerts_to_admins    = var.mdc_contact.alerts_to_admins
 }
-

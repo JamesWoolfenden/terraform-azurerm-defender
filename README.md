@@ -123,10 +123,22 @@ resource "azurerm_role_definition" "terraform_pike" {
 
   permissions {
     actions = [
+    "Microsoft.Authorization/roleAssignments/delete",
+    "Microsoft.Authorization/roleAssignments/read",
+    "Microsoft.Authorization/roleAssignments/write",
     "Microsoft.OperationalInsights/workspaces/delete",
     "Microsoft.OperationalInsights/workspaces/read",
     "Microsoft.OperationalInsights/workspaces/write",
-    "Microsoft.Resources/subscriptions/providers/read"]
+    "Microsoft.OperationsManagement/solutions/delete",
+    "Microsoft.OperationsManagement/solutions/read",
+    "Microsoft.OperationsManagement/solutions/write",
+    "Microsoft.Resources/subscriptions/providers/read",
+    "Microsoft.Security/securityContacts/delete",
+    "Microsoft.Security/securityContacts/read",
+    "Microsoft.Security/securityContacts/write",
+    "Microsoft.Security/workspaceSettings/delete",
+    "Microsoft.Security/workspaceSettings/read",
+    "Microsoft.Security/workspaceSettings/write"]
     not_actions = []
   }
 
